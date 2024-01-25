@@ -4,27 +4,28 @@ using Notes.Contracts.Note;
 namespace Notes.Controllers;
 
 [ApiController]
+[Route("[controller]")]
 public class NotesController : ControllerBase
 {
-    [HttpPost("/notes")]
+    [HttpPost()]
     public IActionResult CreateNote(CreateNoteRequest request)
     {
         return Ok(request);
     }
 
-    [HttpGet("/notes/{id:guid}")]
+    [HttpGet("{id:guid}")]
     public IActionResult GetNote(Guid id)
     {
         return Ok(id);
     }
 
-    [HttpPut("/notes/{id:guid}")]
+    [HttpPut("{id:guid}")]
     public IActionResult UpsertNote(Guid id, UpsertNoteRequest request)
     {
         return Ok(request);
     }
 
-    [HttpDelete("/notes/{id:guid}")]
+    [HttpDelete("{id:guid}")]
     public IActionResult DeleteNote(Guid id)
     {
         return Ok(id);

@@ -1,0 +1,7 @@
+POST http://localhost:5299/notes
+Content-Type: application/json
+
+{
+	"title": "Todo1",
+	"description": "This is my first todo.."
+}

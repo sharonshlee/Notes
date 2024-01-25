@@ -7,7 +7,7 @@ A CRUD REST API from scratch using .NET 8. The backend system supports Creating,
     1. ASP.NET 8
     2. dotnet CLI
     3. Visual Studio Code
-    4. Visual Studio Code Extension
+    4. Visual Studio Code Extension - REST Client
 
 ## Architecture
 
