@@ -1,0 +1,72 @@
+# Ignore Visual Studio Code settings folder
+.vscode/
+
+# Ignore the bin and obj directories for all projects
+**/bin/
+**/obj/
+
+# Ignore user-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore NuGet package folder
+packages/
+
+# Ignore Resharper folder
+_ReSharper*/
+
+# Ignore Visual Studio files
+*.suo
+*.user
+*.suo
+*.user
+*.suo
+*.user
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Rider folder
+.idea/
+
+# Ignore the .NET Core artifacts folder
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore user-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore Tye-specific files
+.tye/
+
+# Ignore user-specific files
+*.suo
+*.user
+*.suo
+*.user
+*.suo
+*.user
+
+# Ignore Rider folder
+.idea/
+
+# Ignore Visual Studio files
+.vs2019/
+.vscode/
+*.suo
+*.user
+*.suo
+*.user
+*.suo
+*.user
