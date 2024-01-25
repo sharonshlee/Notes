@@ -1,5 +1,23 @@
 # Notes API
 
+A CRUD REST API from scratch using .NET 8. The backend system supports Creating, Reading, Updating and Deleting notes.
+
+## Technologies
+
+    1. ASP.NET 8
+    2. dotnet CLI
+    3. Visual Studio Code
+    4. Visual Studio Code Extension
+
+## Architecture
+
+    1. CRUD REST API
+    2. Best Practises
+    3. Functional Programming
+    4. Domain Driven Design
+
+## API Definition
+
 -   [Notes API](#Notes-api)
     -   [Create Note](#create-note)
         -   [Create Note Request](#create-note-request)
