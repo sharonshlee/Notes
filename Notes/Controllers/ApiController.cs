@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 

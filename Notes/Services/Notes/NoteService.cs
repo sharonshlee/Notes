@@ -24,11 +24,13 @@ public class NoteService : INoteService
         return Errors.Notes.NotFound;
     }
 
-    public ErrorOr<Updated> UpsertNote(Note note)
+    public ErrorOr<UpsertedNote> UpsertNote(Note note)
     {
+        var isNewlyCreated = !_notes.ContainsKey(note.Id);
+        
         _notes[note.Id] = note;
 
-        return Result.Updated;
+        return new UpsertedNote(isNewlyCreated);
     }
 
     public ErrorOr<Deleted> DeleteNote(Guid id)

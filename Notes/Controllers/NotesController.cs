@@ -2,7 +2,6 @@ using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Contracts.Note;
 using Notes.Models;
-using Notes.ServiceErrors;
 using Notes.Services.Notes;
 
 namespace Notes.Controllers;
@@ -29,15 +28,9 @@ public class NotesController : ApiController
 
         ErrorOr<Created> createNoteResult = _noteService.CreateNote(note);
 
-        if (createNoteResult.IsError)
-        {
-            return Problem(createNoteResult.Errors);
-        }
-
-        return CreatedAtAction(
-            actionName: nameof(GetNote),
-            routeValues: new { id = note.Id },
-            value: MapNoteResponse(note)
+        return createNoteResult.Match(
+            created => CreatedAtGetNote(note),
+            Problem
         );
     }
 
@@ -48,44 +41,44 @@ public class NotesController : ApiController
 
         return getNoteResult.Match(
             note => Ok(MapNoteResponse(note)),
-            errors => Problem(errors)
+            // errors => Problem(errors)
+            Problem
         );
     }
 
     [HttpPut("{id:guid}")]
     public IActionResult UpsertNote(Guid id, UpsertNoteRequest request)
     {
+        var modifiedDate = DateTime.UtcNow;
+
         ErrorOr<Note> getNoteResult = _noteService.GetNote(id);
 
-        if (getNoteResult.IsError)
-        {
-            return Problem(getNoteResult.Errors);
-        }
-
-        var updatedNote = new Note(
+        var upsertedNote = new Note(
             id,
             request.Title,
             request.Description,
-            getNoteResult.Value.CreatedDate,
-            DateTime.UtcNow
-        );
+            getNoteResult.IsError ? DateTime.UtcNow : getNoteResult.Value.CreatedDate,
+            modifiedDate
+            );
 
-        ErrorOr<Updated> updatedResult = _noteService.UpsertNote(updatedNote);
+        ErrorOr<UpsertedNote> upsertNoteResult = _noteService.UpsertNote(upsertedNote);
 
-        return updatedResult.Match(
-            updated => NoContent(),
-            errors => Problem(errors)
+        return upsertNoteResult.Match(
+            upserted => upserted.IsNewlyCreated ? CreatedAtGetNote(upsertedNote) : NoContent(),
+            // errors => Problem(errors)
+            Problem
         );
     }
 
     [HttpDelete("{id:guid}")]
     public IActionResult DeleteNote(Guid id)
     {
-        ErrorOr<Deleted> deletedResult = _noteService.DeleteNote(id);
+        ErrorOr<Deleted> deleteNoteResult = _noteService.DeleteNote(id);
 
-        return deletedResult.Match(
+        return deleteNoteResult.Match(
             deleted => NoContent(),
-            errors => Problem(errors)
+            // errors => Problem(errors)
+            Problem
         );
     }
 
@@ -100,4 +93,12 @@ public class NotesController : ApiController
         );
     }
 
+    private CreatedAtActionResult CreatedAtGetNote(Note note)
+    {
+        return CreatedAtAction(
+                    actionName: nameof(GetNote),
+                    routeValues: new { id = note.Id },
+                    value: MapNoteResponse(note)
+                );
+    }
 }
