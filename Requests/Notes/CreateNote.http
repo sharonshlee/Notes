@@ -5,3 +5,7 @@ Content-Type: application/json
 	"title": "Todo1",
 	"description": "This is my first todo.."
 }
+
+###
+
+GET http://localhost:5299/Notes/0659bde3-bb85-4602-950b-89b6053febc8
