@@ -1,4 +1,6 @@
-POST http://localhost:5299/notes
+@host = http://localhost:5299
+
+POST {{host}}/notes
 Content-Type: application/json
 
 {
@@ -8,4 +10,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:5299/Notes/0659bde3-bb85-4602-950b-89b6053febc8
+GET {{host}}/Notes/0659bde3-bb85-4602-950b-89b6053febc8

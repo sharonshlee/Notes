@@ -1,3 +1,4 @@
-@id = 99061bcc-95c3-4663-b1f8-f016f22728a7
+@host = http://localhost:5299
+@id = e29f28cf-8473-49ac-83a6-eb704ed940de
 
-DELETE http://localhost:5299/notes/{{id}}
+DELETE {{host}}/notes/{{id}}

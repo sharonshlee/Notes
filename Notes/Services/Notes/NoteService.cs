@@ -1,27 +1,40 @@
+using ErrorOr;
 using Notes.Models;
+using Notes.ServiceErrors;
 
 namespace Notes.Services.Notes;
 
 public class NoteService : INoteService
 {
     private static readonly Dictionary<Guid, Note> _notes = new();
-    public void CreateNote(Note note)
+    public ErrorOr<Created> CreateNote(Note note)
     {
         _notes.Add(note.Id, note);
+
+        return Result.Created;
     }
 
-    public void DeleteNote(Guid id)
+    public ErrorOr<Note> GetNote(Guid id)
     {
-        _notes.Remove(id);
+        if (_notes.TryGetValue(id, out var note))
+        {
+            return note;
+        }
+
+        return Errors.Notes.NotFound;
     }
 
-    public Note GetNote(Guid id)
-    {
-        return _notes[id];
-    }
-
-    public void UpsertNote(Note note)
+    public ErrorOr<Updated> UpsertNote(Note note)
     {
         _notes[note.Id] = note;
+
+        return Result.Updated;
+    }
+
+    public ErrorOr<Deleted> DeleteNote(Guid id)
+    {
+        _notes.Remove(id);
+
+        return Result.Deleted;
     }
 }
