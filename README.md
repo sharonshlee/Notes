@@ -62,7 +62,8 @@ Location: {{host}}/Notes/{{id}}
 	"id": "00000000-0000-0000-0000-000000000000",
 	"title": "Todo1",
 	"description": "This is my first todo..",
-	"createdDate": "2024-01-08T08:00:00"
+	"createdDate": "2024-01-08T08:00:00",
+	"modifiedDate": "2024-01-08T08:00:00"
 }
 ```
 

@@ -19,13 +19,16 @@ public class NotesController : ApiController
     [HttpPost]
     public IActionResult CreateNote(CreateNoteRequest request)
     {
-        var note = new Note(
-            Guid.NewGuid(),
+        ErrorOr<Note> requestToNoteResult = Note.Create(
             request.Title,
-            request.Description,
-            DateTime.UtcNow,
-            DateTime.UtcNow);
+            request.Description);
 
+        if (requestToNoteResult.IsError)
+        {
+            return Problem(requestToNoteResult.Errors);
+        }
+
+        var note = requestToNoteResult.Value;
         ErrorOr<Created> createNoteResult = _noteService.CreateNote(note);
 
         return createNoteResult.Match(
@@ -41,7 +44,6 @@ public class NotesController : ApiController
 
         return getNoteResult.Match(
             note => Ok(MapNoteResponse(note)),
-            // errors => Problem(errors)
             Problem
         );
     }
@@ -49,23 +51,25 @@ public class NotesController : ApiController
     [HttpPut("{id:guid}")]
     public IActionResult UpsertNote(Guid id, UpsertNoteRequest request)
     {
-        var modifiedDate = DateTime.UtcNow;
-
         ErrorOr<Note> getNoteResult = _noteService.GetNote(id);
 
-        var upsertedNote = new Note(
-            id,
+        ErrorOr<Note> requestToNoteResult = Note.Create(
             request.Title,
             request.Description,
-            getNoteResult.IsError ? DateTime.UtcNow : getNoteResult.Value.CreatedDate,
-            modifiedDate
+            id,
+            getNoteResult.Value?.CreatedDate
             );
 
+        if (requestToNoteResult.IsError)
+        {
+            return Problem(requestToNoteResult.Errors);
+        }
+
+        var upsertedNote = requestToNoteResult.Value;
         ErrorOr<UpsertedNote> upsertNoteResult = _noteService.UpsertNote(upsertedNote);
 
         return upsertNoteResult.Match(
             upserted => upserted.IsNewlyCreated ? CreatedAtGetNote(upsertedNote) : NoContent(),
-            // errors => Problem(errors)
             Problem
         );
     }
